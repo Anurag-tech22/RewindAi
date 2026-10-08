@@ -137,7 +137,7 @@ export default function App() {
                 key="dashboard"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-1 overflow-y-auto p-8"
+                className="flex-1 overflow-y-auto scroll-smooth p-8"
               >
                 <div className="max-w-[1200px] mx-auto space-y-8 pb-24">
                   {activeTab === 'Overview' && (
