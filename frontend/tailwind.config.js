@@ -8,11 +8,11 @@ export default {
     extend: {
       colors: {
         background: '#FFFFFF', // White
-        surface: '#F8FAFC',    // Very light gray
-        border: '#E5E7EB',     // Thin border
-        primary: '#111827',    // Near black
-        secondary: '#6B7280',  // Gray
-        signal: '#2563EB',     // AI / Blue
+        surface: '#FAFAFA',    // Neutral 50
+        border: '#E5E5E5',     // Neutral 200
+        primary: '#000000',    // Pure black
+        secondary: '#737373',  // Neutral 500
+        signal: '#171717',     // Neutral 900
         warning: '#D97706',    // amber
         danger: '#DC2626',     // red
         success: '#16A34A',    // green
