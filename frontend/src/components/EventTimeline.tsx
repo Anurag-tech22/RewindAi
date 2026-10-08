@@ -1,38 +1,49 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export function EventTimeline({ data, activeIndex, onIndexChange }: { data: any[], activeIndex: number, onIndexChange: (i: number) => void }) {
+export function EventTimeline({ data, activeIndex, onIndexChange }: { data: any[], activeIndex: number, onIndexChange: (idx: number) => void }) {
   return (
-    <div className="h-full flex flex-col">
-      <div className="text-xs font-semibold tracking-widest uppercase text-secondary mb-8">Event Timeline</div>
-      <div className="relative flex-1 flex flex-col justify-between py-2">
-        <div className="absolute left-[3px] top-0 bottom-0 w-[1px] bg-border z-0" />
-        
-        {data.map((point, index) => {
-          const isActive = index === activeIndex;
-          const isPast = index < activeIndex;
+    <div className="relative">
+      <div className="absolute top-1/2 left-0 w-full h-[2px] bg-surface -translate-y-1/2 rounded-full overflow-hidden">
+        <motion.div 
+          className="h-full bg-primary"
+          initial={{ width: 0 }}
+          animate={{ width: `${(activeIndex / (data.length - 1)) * 100}%` }}
+          transition={{ type: "spring", stiffness: 50 }}
+        />
+      </div>
+      
+      <div className="relative flex justify-between">
+        {data.map((point, idx) => {
+          const isActive = idx === activeIndex;
+          const isPast = idx <= activeIndex;
           
           return (
-            <button
-              key={point.time_label}
-              onClick={() => onIndexChange(index)}
-              className={`relative z-10 flex items-center gap-4 text-sm font-mono transition-colors text-left group
-                ${isActive ? 'text-primary' : isPast ? 'text-secondary/70' : 'text-secondary hover:text-primary'}
-              `}
+            <div 
+              key={idx}
+              className="flex flex-col items-center cursor-pointer group"
+              onClick={() => onIndexChange(idx)}
             >
-              <div className={`w-2 h-2 rounded-full transition-colors relative
-                ${isActive ? 'bg-signal shadow-[0_0_8px_rgba(0,229,255,0.5)]' : isPast ? 'bg-border' : 'bg-surface border border-border group-hover:border-secondary'}
-              `} />
-              {point.time_label}
+              <div className={`w-3 h-3 rounded-full mb-4 transition-all duration-300 z-10 
+                ${isActive ? 'bg-primary scale-150 ring-4 ring-primary/20' : 
+                  isPast ? 'bg-primary' : 'bg-border group-hover:bg-secondary'}`}
+              />
               
-              {isActive && (
-                <motion.div 
-                  layoutId="active-indicator"
-                  className="absolute -left-[5px] top-1/2 -translate-y-1/2 w-[11px] h-[11px] border border-signal rounded-full opacity-50"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
-            </button>
+              <div className="text-center">
+                <div className={`text-xs font-mono mb-1 transition-colors ${isActive ? 'text-primary font-bold' : isPast ? 'text-primary' : 'text-secondary'}`}>
+                  {point.timestamp}
+                </div>
+                {isActive && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-48 text-center text-[10px] text-secondary font-mono bg-surface p-2 rounded border border-border shadow-sm z-20"
+                  >
+                    {point.description}
+                  </motion.div>
+                )}
+              </div>
+            </div>
           );
         })}
       </div>

@@ -24,13 +24,13 @@ export default function App() {
       .catch(err => console.error(err));
   }, []);
 
-  if (!timelineData.length) return <div className="min-h-screen bg-background flex items-center justify-center font-mono text-secondary text-sm">Loading telemetry...</div>;
+  if (!timelineData.length) return <div className="min-h-screen flex items-center justify-center font-mono text-secondary text-sm">Loading telemetry...</div>;
 
   const currentState = timelineData[activeIndex];
   const finalState = timelineData[timelineData.length - 1];
 
   return (
-    <div className="min-h-screen bg-background text-primary font-sans overflow-x-hidden selection:bg-surface selection:text-primary flex flex-col">
+    <div className="min-h-screen bg-background text-primary font-sans flex flex-col">
       <AnimatePresence mode="wait">
         {!hasStarted ? (
           <motion.div 
@@ -38,13 +38,13 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto px-6 text-center w-full py-24"
+            className="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto px-6 text-center py-24"
           >
             <div className="text-xs font-semibold tracking-widest uppercase text-primary mb-8 px-2 py-1 rounded bg-surface inline-block">
               REWIND
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-primary mb-6 max-w-3xl leading-snug">
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6 max-w-3xl leading-snug">
               Environmental intelligence for understanding what happened — and what could have changed it.
             </h1>
             
@@ -65,7 +65,7 @@ export default function App() {
                 ].map((event, i) => (
                   <div key={i} className="border border-border rounded-xl p-6 bg-background shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col items-start text-left">
                     <div className="text-xs font-mono uppercase text-secondary mb-4">{event.type}</div>
-                    <div className="text-xl font-semibold text-primary mb-2">{event.location}</div>
+                    <div className="text-xl font-semibold mb-2">{event.location}</div>
                     <div className="mt-auto text-sm text-secondary font-mono bg-surface px-2 py-1 rounded">{event.impact} impact</div>
                   </div>
                 ))}
@@ -73,11 +73,10 @@ export default function App() {
             </div>
           </motion.div>
         ) : (
-          <div className="flex-1 flex flex-col h-screen overflow-hidden bg-background">
-            {/* Top Navigation */}
-            <header className="h-14 border-b border-border flex items-center justify-between px-6 bg-background shrink-0 z-10">
+          <div className="flex-1 flex flex-col h-screen overflow-hidden">
+            <header className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0 z-10">
               <div className="flex items-center gap-6">
-                <div className="font-semibold tracking-widest uppercase text-primary text-sm flex items-center gap-2">
+                <div className="font-semibold tracking-widest uppercase text-sm flex items-center gap-2">
                   <div className="w-4 h-4 bg-primary rounded-full"></div>
                   REWIND
                 </div>
@@ -97,7 +96,6 @@ export default function App() {
             </header>
 
             <div className="flex flex-1 overflow-hidden">
-              {/* Sidebar */}
               <aside className="w-[220px] border-r border-border bg-surface/30 hidden lg:flex flex-col py-6 shrink-0">
                 <div className="px-4 mb-6">
                   <div className="text-xs font-mono text-secondary uppercase tracking-widest mb-2">Events</div>
@@ -128,7 +126,6 @@ export default function App() {
                 </div>
               </aside>
 
-              {/* Main Content Area */}
               <motion.main 
                 key="dashboard"
                 initial={{ opacity: 0, y: 10 }}
@@ -138,7 +135,6 @@ export default function App() {
                 <div className="max-w-[1200px] mx-auto space-y-8 pb-24">
                   {activeTab === 'Overview' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                      {/* Zone 1: Timeline Navigation */}
                       <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
                         <h3 className="text-xs font-mono text-secondary uppercase tracking-widest mb-6">Environmental Timeline</h3>
                         <EventTimeline 
@@ -149,7 +145,6 @@ export default function App() {
                       </div>
 
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        {/* Zone 2: Environmental Monitoring */}
                         <div className="lg:col-span-7 bg-background rounded-xl border border-border p-6 shadow-sm flex flex-col justify-between">
                           <EnvironmentalMetrics state={currentState} />
                           <div className="mt-8 pt-6 border-t border-border flex justify-between items-end">
@@ -160,7 +155,6 @@ export default function App() {
                           </div>
                         </div>
 
-                        {/* Zone 3: AI Investigator */}
                         <div className="lg:col-span-5 bg-background rounded-xl border border-border p-6 shadow-sm">
                           <AIExplanation state={currentState} />
                         </div>

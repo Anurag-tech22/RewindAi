@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
 export function InterventionRanking() {
@@ -22,7 +22,7 @@ export function InterventionRanking() {
             </div>
             
             <div className="w-2/3 flex items-center gap-4">
-              <div className="flex-1 h-2 bg-surface overflow-hidden rounded-full">
+              <div className="flex-1 h-2 bg-surface overflow-hidden rounded-full border border-border">
                 <motion.div 
                   initial={{ width: 0 }}
                   whileInView={{ width: `${r.pts}%` }}
