@@ -50,23 +50,26 @@ export default function App() {
             
             <button 
               onClick={() => setHasStarted(true)}
-              className="px-6 py-3 bg-primary text-background hover:bg-primary/90 transition-colors rounded-lg text-sm font-medium tracking-wide shadow-sm mt-4 mb-24"
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all rounded-xl text-sm font-bold tracking-wide shadow-xl shadow-blue-500/20 mt-4 mb-24 hover:scale-105 active:scale-95"
             >
               Explore events
             </button>
 
             <div className="w-full text-left">
-              <h2 className="text-sm font-semibold tracking-wide text-secondary mb-6 uppercase">Recent Events</h2>
+              <h2 className="text-sm font-bold tracking-wide text-secondary mb-6 uppercase">Recent Events</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { type: 'FLOOD', location: 'Pune', impact: '87%' },
-                  { type: 'HEATWAVE', location: 'Delhi', impact: '74%' },
-                  { type: 'WILDFIRE', location: 'California', impact: '91%' },
+                  { type: 'FLOOD', location: 'Pune', impact: '87%', icon: '🌊', color: 'text-blue-500', bg: 'bg-blue-50' },
+                  { type: 'HEATWAVE', location: 'Delhi', impact: '74%', icon: '☀️', color: 'text-amber-500', bg: 'bg-amber-50' },
+                  { type: 'WILDFIRE', location: 'California', impact: '91%', icon: '🔥', color: 'text-red-500', bg: 'bg-red-50' },
                 ].map((event, i) => (
-                  <div key={i} className="border border-border rounded-xl p-6 bg-background shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col items-start text-left">
-                    <div className="text-xs font-mono uppercase text-secondary mb-4">{event.type}</div>
-                    <div className="text-xl font-semibold mb-2">{event.location}</div>
-                    <div className="mt-auto text-sm text-secondary font-mono bg-surface px-2 py-1 rounded">{event.impact} impact</div>
+                  <div key={i} className="border border-border/60 rounded-2xl p-6 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col items-start text-left relative overflow-hidden group">
+                    <div className={`absolute top-0 right-0 w-24 h-24 ${event.bg} rounded-bl-full -z-10 transition-transform group-hover:scale-125`} />
+                    <div className="text-xs font-bold uppercase text-secondary mb-4 flex items-center gap-2">
+                      <span className="text-lg">{event.icon}</span> {event.type}
+                    </div>
+                    <div className="text-xl font-bold mb-2 text-primary">{event.location}</div>
+                    <div className={`mt-auto text-sm font-bold px-3 py-1.5 rounded-lg ${event.bg} ${event.color}`}>{event.impact} impact</div>
                   </div>
                 ))}
               </div>
@@ -74,46 +77,48 @@ export default function App() {
           </motion.div>
         ) : (
           <div className="flex-1 flex flex-col h-screen overflow-hidden">
-            <header className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0 z-10">
-              <div className="flex items-center gap-6">
-                <div className="font-semibold tracking-widest uppercase text-sm flex items-center gap-2">
-                  <div className="w-4 h-4 bg-primary rounded-full"></div>
-                  REWIND
+            <header className="h-16 border-b border-border/50 bg-white/70 backdrop-blur-md flex items-center justify-between px-8 shrink-0 z-20 sticky top-0 shadow-sm">
+              <div className="flex items-center gap-8">
+                <div className="font-bold tracking-widest uppercase text-sm flex items-center gap-3">
+                  <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-sm"></div>
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">REWIND</span>
                 </div>
-                <nav className="hidden md:flex items-center gap-6 text-sm text-secondary">
-                  <a href="#" className="text-primary font-medium">Events</a>
+                <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-secondary">
+                  <a href="#" className="text-primary">Events</a>
                   <a href="#" className="hover:text-primary transition-colors">Explore</a>
                   <a href="#" className="hover:text-primary transition-colors">Memory</a>
                 </nav>
               </div>
               <div className="flex items-center gap-4">
-                <div className="hidden md:flex items-center gap-2 text-xs font-mono text-secondary bg-surface border border-border px-3 py-1.5 rounded-md cursor-pointer hover:border-secondary transition-colors">
+                <div className="hidden md:flex items-center gap-2 text-xs font-medium text-secondary bg-slate-50 border border-border/80 px-4 py-2 rounded-lg cursor-pointer hover:border-blue-400 transition-colors shadow-inner">
                   <span>Search...</span>
-                  <span className="opacity-50">⌘K</span>
+                  <span className="opacity-50 font-mono">⌘K</span>
                 </div>
-                <div className="w-8 h-8 rounded-full border border-border bg-surface flex items-center justify-center text-xs text-secondary">◯</div>
+                <div className="w-9 h-9 rounded-full border border-border/80 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-xs text-blue-600 font-bold shadow-sm cursor-pointer hover:shadow transition-shadow">JD</div>
               </div>
             </header>
 
-            <div className="flex flex-1 overflow-hidden">
-              <aside className="w-[220px] border-r border-border bg-surface/30 hidden lg:flex flex-col py-6 shrink-0">
-                <div className="px-4 mb-6">
-                  <div className="text-xs font-mono text-secondary uppercase tracking-widest mb-2">Events</div>
-                  <div className="text-sm font-medium bg-background border border-border rounded-md px-3 py-2 shadow-sm flex items-center justify-between cursor-pointer">
-                    <span>Pune · 2026</span>
-                    <span className="text-secondary opacity-50 text-xs">▼</span>
+            <div className="flex flex-1 overflow-hidden relative">
+              <aside className="w-[240px] border-r border-border/50 bg-white/50 backdrop-blur-sm hidden lg:flex flex-col py-6 shrink-0 z-10">
+                <div className="px-5 mb-8">
+                  <div className="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Active Event</div>
+                  <div className="text-sm font-bold bg-white border border-border/80 rounded-xl px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors">
+                    <span className="text-primary">Pune · 2026</span>
+                    <span className="text-blue-500 text-xs">▼</span>
                   </div>
-                  <div className="text-xs text-secondary mt-3 hover:text-primary cursor-pointer px-1">+ New Investigation</div>
+                  <div className="text-xs font-semibold text-blue-600 mt-3 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1">
+                    <span>+</span> New Investigation
+                  </div>
                 </div>
                 
                 <div className="px-3 space-y-1">
-                  <div className="text-xs font-mono text-secondary uppercase tracking-widest px-3 mb-2 mt-4">Analysis</div>
+                  <div className="text-[10px] font-bold text-secondary uppercase tracking-widest px-3 mb-3 mt-4">Modules</div>
                   {tabs.map((item) => (
                     <div 
                       key={item} 
                       onClick={() => setActiveTab(item)}
-                      className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
-                        item === activeTab ? 'bg-primary/5 text-primary font-medium' : 'text-secondary hover:text-primary hover:bg-surface'
+                      className={`px-4 py-2.5 mx-2 text-sm rounded-xl cursor-pointer transition-all font-medium ${
+                        item === activeTab ? 'bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50' : 'text-secondary hover:text-primary hover:bg-slate-50'
                       }`}
                     >
                       {item}
@@ -135,8 +140,8 @@ export default function App() {
                 <div className="max-w-[1200px] mx-auto space-y-8 pb-24">
                   {activeTab === 'Overview' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                      <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
-                        <h3 className="text-xs font-mono text-secondary uppercase tracking-widest mb-6">Environmental Timeline</h3>
+                      <div className="bg-white/80 backdrop-blur-lg rounded-2xl border border-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                        <h3 className="text-xs font-bold text-secondary uppercase tracking-widest mb-8">Environmental Timeline</h3>
                         <EventTimeline 
                           data={timelineData} 
                           activeIndex={activeIndex} 
@@ -145,17 +150,17 @@ export default function App() {
                       </div>
 
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        <div className="lg:col-span-7 bg-background rounded-xl border border-border p-6 shadow-sm flex flex-col justify-between">
+                        <div className="lg:col-span-7 bg-white/80 backdrop-blur-lg rounded-2xl border border-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col justify-between">
                           <EnvironmentalMetrics state={currentState} />
-                          <div className="mt-8 pt-6 border-t border-border flex justify-between items-end">
-                            <div className="text-xs font-mono text-secondary uppercase tracking-widest">Flood Severity Risk</div>
-                            <div className="text-4xl font-mono text-primary flex items-baseline gap-1">
-                              {currentState.impact.toFixed(1)}<span className="text-xl text-secondary">%</span>
+                          <div className="mt-8 pt-6 border-t border-border/60 flex justify-between items-end">
+                            <div className="text-xs font-bold text-secondary uppercase tracking-widest">Flood Severity Risk</div>
+                            <div className="text-5xl font-black text-red-500 tracking-tighter flex items-baseline gap-1">
+                              {currentState.impact.toFixed(1)}<span className="text-2xl text-red-300">%</span>
                             </div>
                           </div>
                         </div>
 
-                        <div className="lg:col-span-5 bg-background rounded-xl border border-border p-6 shadow-sm">
+                        <div className="lg:col-span-5 bg-gradient-to-br from-white to-blue-50/50 rounded-2xl border border-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                           <AIExplanation state={currentState} />
                         </div>
                       </div>
@@ -164,7 +169,7 @@ export default function App() {
 
                   {activeTab === 'Rewind Lab' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                      <div className="bg-background rounded-xl border border-border p-8 shadow-sm">
+                      <div className="bg-white/80 backdrop-blur-lg rounded-2xl border border-white p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                         <RewindLab baseState={finalState} />
                       </div>
                     </motion.div>

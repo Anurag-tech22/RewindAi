@@ -7,15 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#FFFFFF',
-        surface: '#FAFAFA',
-        border: '#E5E5E5',
-        primary: '#000000',
-        secondary: '#737373',
-        signal: '#171717',
-        warning: '#D97706',
-        danger: '#DC2626',
-        success: '#16A34A',
+        background: 'transparent', // Handled by CSS gradient
+        surface: '#FFFFFF',    // Pure white cards
+        border: '#e2e8f0',     // soft slate
+        primary: '#0f172a',    // Deep slate for text
+        secondary: '#64748b',  // muted slate
+        signal: '#3b82f6',     // Vibrant blue
+        warning: '#f59e0b',    // Amber
+        danger: '#ef4444',     // Red
+        success: '#10b981',    // Emerald
       },
       fontFamily: {
         sans: ['Geist', 'sans-serif'],

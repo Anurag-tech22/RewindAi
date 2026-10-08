@@ -11,19 +11,19 @@ export function AIExplanation({ state }: { state: any }) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xs font-mono text-signal flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-signal animate-pulse" />
+      <div className="flex justify-between items-center mb-8">
+        <h3 className="text-xs font-bold text-blue-600 uppercase tracking-widest flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
           AI Investigator
         </h3>
         
-        <div className="flex bg-surface p-1 rounded border border-border">
+        <div className="flex bg-white p-1 rounded-lg border border-border/60 shadow-sm">
           {['SCIENCE', 'PLANNER', 'CITIZEN'].map((m) => (
             <button
               key={m}
               onClick={() => setMode(m as any)}
-              className={`text-[9px] font-mono px-2 py-1 rounded transition-colors ${
-                mode === m ? 'bg-background text-primary shadow-sm border border-border' : 'text-secondary hover:text-primary'
+              className={`text-[10px] font-bold px-3 py-1.5 rounded-md transition-all ${
+                mode === m ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-sm border border-blue-100' : 'text-secondary hover:text-primary hover:bg-slate-50'
               }`}
             >
               {m}
@@ -32,7 +32,7 @@ export function AIExplanation({ state }: { state: any }) {
         </div>
       </div>
 
-      <div className="flex-1 bg-surface rounded-lg p-5 border border-border text-sm leading-relaxed text-primary">
+      <div className="flex-1 bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-white shadow-inner text-sm leading-relaxed text-primary font-medium">
         {explanations[mode]}
       </div>
       

@@ -13,24 +13,24 @@ export function InterventionRanking() {
     <div>
       <div className="text-xs font-semibold tracking-widest uppercase text-secondary mb-8">Intervention Ranking</div>
       
-      <div className="space-y-6">
+      <div className="space-y-8">
         {rankings.map((r, i) => (
-          <div key={r.name} className="flex justify-between items-center text-sm font-mono">
+          <div key={r.name} className="flex justify-between items-center text-sm font-medium">
             <div className="w-1/3 flex items-center gap-4">
-              <span className="text-secondary opacity-50">0{i + 1}</span>
-              <span className="text-primary uppercase truncate">{r.name}</span>
+              <span className="text-blue-500 font-bold bg-blue-50 w-8 h-8 rounded-lg flex items-center justify-center shrink-0">0{i + 1}</span>
+              <span className="text-primary font-bold">{r.name}</span>
             </div>
             
-            <div className="w-2/3 flex items-center gap-4">
-              <div className="flex-1 h-2 bg-surface overflow-hidden rounded-full border border-border">
+            <div className="w-2/3 flex items-center gap-6">
+              <div className="flex-1 h-3 bg-slate-100 overflow-hidden rounded-full shadow-inner">
                 <motion.div 
                   initial={{ width: 0 }}
                   whileInView={{ width: `${r.pts}%` }}
-                  transition={{ duration: 1, delay: i * 0.1 }}
-                  className="h-full bg-primary" 
+                  transition={{ duration: 1, delay: i * 0.1, type: "spring" }}
+                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full" 
                 />
               </div>
-              <span className="text-signal min-w-[120px] text-right">{r.pts} pts <span className="text-secondary">reduction</span></span>
+              <span className="text-indigo-600 font-black min-w-[120px] text-right text-lg">{r.pts} <span className="text-secondary text-xs uppercase tracking-widest font-bold">pts</span></span>
             </div>
           </div>
         ))}

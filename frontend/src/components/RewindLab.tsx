@@ -31,12 +31,13 @@ export function RewindLab({ baseState }: { baseState: any }) {
 
   return (
     <div>
-      <div className="flex justify-between items-end mb-8">
+      <div className="flex justify-between items-end mb-10">
         <div>
-          <h2 className="text-xl font-semibold text-primary mb-1">The Rewind Lab</h2>
-          <p className="text-sm text-secondary">Adjust parameters to simulate an alternative historical timeline.</p>
+          <h2 className="text-2xl font-black text-primary tracking-tight mb-2">The Rewind Lab</h2>
+          <p className="text-sm font-medium text-secondary">Adjust parameters to simulate an alternative historical timeline.</p>
         </div>
-        <div className="text-xs font-mono px-3 py-1 bg-surface border border-border rounded text-secondary uppercase tracking-widest">
+        <div className="text-xs font-bold px-4 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-full uppercase tracking-widest flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
           Engine: Active
         </div>
       </div>
@@ -49,12 +50,12 @@ export function RewindLab({ baseState }: { baseState: any }) {
             { label: 'Early Warning Time', val: warningTime, set: setWarningTime, desc: 'Advance notice for evacuation (0-48h)' },
           ].map(slider => (
             <div key={slider.label}>
-              <div className="flex justify-between items-end mb-2">
+              <div className="flex justify-between items-end mb-3">
                 <div>
-                  <div className="text-sm font-medium text-primary">{slider.label}</div>
-                  <div className="text-[10px] text-secondary">{slider.desc}</div>
+                  <div className="text-sm font-bold text-primary">{slider.label}</div>
+                  <div className="text-xs text-secondary mt-0.5">{slider.desc}</div>
                 </div>
-                <div className="text-xs font-mono bg-surface border border-border px-2 py-1 rounded">
+                <div className="text-sm font-black text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-lg">
                   {slider.val}%
                 </div>
               </div>
@@ -71,19 +72,20 @@ export function RewindLab({ baseState }: { baseState: any }) {
           <button 
             onClick={handleSimulate}
             disabled={simulating}
-            className={`w-full py-3 text-sm font-semibold tracking-widest uppercase transition-colors rounded-lg shadow-sm
-              ${simulating ? 'bg-border text-secondary cursor-not-allowed' : 'bg-primary text-background hover:bg-primary/90'}
+            className={`w-full py-4 mt-4 text-sm font-bold tracking-widest uppercase transition-all rounded-xl shadow-lg
+              ${simulating ? 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none' : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:-translate-y-1 hover:shadow-blue-500/30'}
             `}
           >
             {simulating ? 'Running simulation...' : 'Run Simulation'}
           </button>
         </div>
 
-        <div className="bg-surface rounded-xl border border-border p-8 flex flex-col justify-center">
+        <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-white p-10 flex flex-col justify-center shadow-inner relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-50 -z-10 -translate-y-1/2 translate-x-1/2"></div>
           {!results ? (
             <div className="text-center text-secondary">
-              <div className="text-3xl mb-4">◷</div>
-              <div className="text-sm">Awaiting simulation parameters.</div>
+              <div className="text-5xl mb-6 opacity-20">◷</div>
+              <div className="text-sm font-medium">Awaiting simulation parameters.</div>
             </div>
           ) : (
             <motion.div 
@@ -91,38 +93,38 @@ export function RewindLab({ baseState }: { baseState: any }) {
               animate={{ opacity: 1, scale: 1 }}
               className="space-y-8"
             >
-              <div className="flex items-center justify-between border-b border-border pb-6">
+              <div className="flex items-center justify-between border-b border-border/60 pb-8">
                 <div>
-                  <div className="text-[10px] uppercase tracking-widest text-secondary mb-1">Original Event</div>
-                  <div className="text-xs uppercase tracking-widest text-primary">Physical Impact</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-secondary mb-2">Original Event</div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-primary">Physical Impact</div>
                 </div>
-                <div className="text-2xl font-mono text-secondary line-through opacity-50">
+                <div className="text-3xl font-black text-slate-300 line-through">
                   {baseState.impact.toFixed(0)}%
                 </div>
-                <div className="text-secondary text-sm">→</div>
+                <div className="text-blue-400 text-xl font-bold px-4">→</div>
                 <div className="text-right">
-                  <div className="text-[10px] uppercase tracking-widest text-secondary mb-1">Simulated Event</div>
-                  <div className="text-3xl font-mono text-primary">
-                    {results.physical_impact.toFixed(0)}<span className="text-lg text-secondary">%</span>
+                  <div className="text-xs font-bold uppercase tracking-widest text-secondary mb-2">Simulated Event</div>
+                  <div className="text-4xl font-black text-blue-600 tracking-tighter">
+                    {results.physical_impact.toFixed(0)}<span className="text-xl text-blue-400">%</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center justify-between pt-4">
                 <div>
-                  <div className="text-[10px] uppercase tracking-widest text-secondary mb-1">Original Event</div>
-                  <div className="text-xs uppercase tracking-widest text-warning">Human Exposure</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-secondary mb-2">Original Event</div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-amber-500">Human Exposure</div>
                 </div>
-                <div className="text-4xl font-mono text-secondary line-through opacity-50">
+                <div className="text-4xl font-black text-slate-300 line-through">
                   {baseState.impact.toFixed(0)}%
                 </div>
-                <div className="text-secondary text-xl">→</div>
+                <div className="text-blue-400 text-2xl font-bold px-4">→</div>
                 <div className="text-right">
-                  <div className="text-[10px] uppercase tracking-widest text-signal mb-1">Modeled Counterfactual</div>
-                  <div className="text-6xl font-mono text-primary">
-                    {results.human_exposure.toFixed(0)}<span className="text-3xl text-secondary">%</span>
+                  <div className="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-2">Modeled Counterfactual</div>
+                  <div className="text-7xl font-black text-indigo-600 tracking-tighter">
+                    {results.human_exposure.toFixed(0)}<span className="text-3xl text-indigo-400">%</span>
                   </div>
-                  <div className="text-sm text-success mt-2 font-mono">
+                  <div className="text-sm font-bold text-emerald-500 mt-3 bg-emerald-50 inline-block px-3 py-1 rounded-lg">
                     ↓ Risk reduced by {results.exposure_reduction.toFixed(0)} pts
                   </div>
                 </div>
