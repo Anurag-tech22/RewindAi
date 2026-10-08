@@ -12,7 +12,7 @@ export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('Overview');
   
-  const tabs = ['Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
+  const tabs = [ 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
   useEffect(() => {
     fetch('/api/event/timeline')
