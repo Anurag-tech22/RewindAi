@@ -10,6 +10,9 @@ export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [timelineData, setTimelineData] = useState<any[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState('Overview');
+  
+  const tabs = ['Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
   useEffect(() => {
     fetch('http://localhost:8000/api/event/timeline')
@@ -107,11 +110,12 @@ export default function App() {
                 
                 <div className="px-3 space-y-1">
                   <div className="text-xs font-mono text-secondary uppercase tracking-widest px-3 mb-2 mt-4">Analysis</div>
-                  {['Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'].map((item, i) => (
+                  {tabs.map((item) => (
                     <div 
                       key={item} 
+                      onClick={() => setActiveTab(item)}
                       className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
-                        item === 'Rewind Lab' ? 'bg-primary/5 text-primary font-medium' : 'text-secondary hover:text-primary hover:bg-surface'
+                        item === activeTab ? 'bg-primary/5 text-primary font-medium' : 'text-secondary hover:text-primary hover:bg-surface'
                       }`}
                     >
                       {item}
@@ -132,43 +136,63 @@ export default function App() {
                 className="flex-1 overflow-y-auto p-8"
               >
                 <div className="max-w-[1200px] mx-auto space-y-8 pb-24">
-                  {/* Zone 1: Timeline Navigation */}
-                  <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
-                    <h3 className="text-xs font-mono text-secondary uppercase tracking-widest mb-6">Environmental Timeline</h3>
-                    <EventTimeline 
-                      data={timelineData} 
-                      activeIndex={activeIndex} 
-                      onIndexChange={setActiveIndex} 
-                    />
-                  </div>
+                  {activeTab === 'Overview' && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                      {/* Zone 1: Timeline Navigation */}
+                      <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
+                        <h3 className="text-xs font-mono text-secondary uppercase tracking-widest mb-6">Environmental Timeline</h3>
+                        <EventTimeline 
+                          data={timelineData} 
+                          activeIndex={activeIndex} 
+                          onIndexChange={setActiveIndex} 
+                        />
+                      </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* Zone 2: Environmental Monitoring */}
-                    <div className="lg:col-span-7 bg-background rounded-xl border border-border p-6 shadow-sm flex flex-col justify-between">
-                      <EnvironmentalMetrics state={currentState} />
-                      <div className="mt-8 pt-6 border-t border-border flex justify-between items-end">
-                        <div className="text-xs font-mono text-secondary uppercase tracking-widest">Flood Severity Risk</div>
-                        <div className="text-4xl font-mono text-primary flex items-baseline gap-1">
-                          {currentState.impact.toFixed(1)}<span className="text-xl text-secondary">%</span>
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        {/* Zone 2: Environmental Monitoring */}
+                        <div className="lg:col-span-7 bg-background rounded-xl border border-border p-6 shadow-sm flex flex-col justify-between">
+                          <EnvironmentalMetrics state={currentState} />
+                          <div className="mt-8 pt-6 border-t border-border flex justify-between items-end">
+                            <div className="text-xs font-mono text-secondary uppercase tracking-widest">Flood Severity Risk</div>
+                            <div className="text-4xl font-mono text-primary flex items-baseline gap-1">
+                              {currentState.impact.toFixed(1)}<span className="text-xl text-secondary">%</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Zone 3: AI Investigator */}
+                        <div className="lg:col-span-5 bg-background rounded-xl border border-border p-6 shadow-sm">
+                          <AIExplanation state={currentState} />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
+                  )}
 
-                    {/* Zone 3: AI Investigator */}
-                    <div className="lg:col-span-5 bg-background rounded-xl border border-border p-6 shadow-sm">
-                      <AIExplanation state={currentState} />
-                    </div>
-                  </div>
+                  {activeTab === 'Rewind Lab' && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <div className="bg-background rounded-xl border border-border p-8 shadow-sm">
+                        <RewindLab baseState={finalState} />
+                      </div>
+                    </motion.div>
+                  )}
 
-                  {/* Bottom Section: Rewind Lab */}
-                  <div className="bg-background rounded-xl border border-border p-8 shadow-sm">
-                    <RewindLab baseState={finalState} />
-                  </div>
+                  {activeTab === 'Interventions' && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
+                        <InterventionRanking />
+                      </div>
+                    </motion.div>
+                  )}
 
-                  {/* Final Section: Intervention Ranking */}
-                  <div className="bg-background rounded-xl border border-border p-6 shadow-sm">
-                    <InterventionRanking />
-                  </div>
+                  {(activeTab === 'Events' || activeTab === 'Climate Memory') && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-background rounded-xl border border-border p-16 shadow-sm flex flex-col items-center justify-center text-center">
+                      <div className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center mb-6">
+                        <span className="text-secondary">◷</span>
+                      </div>
+                      <h2 className="text-xl font-semibold text-primary mb-2">{activeTab}</h2>
+                      <p className="text-secondary text-sm max-w-sm">This module is currently indexing historical environmental data and global climate models. Please check back soon.</p>
+                    </motion.div>
+                  )}
                 </div>
               </motion.main>
             </div>
