@@ -35,7 +35,7 @@ def get_timeline():
     ]
 
 @app.post("/api/simulate")
-def simulate_intervention(params: SimulationParams):
+def simulate_intervention(params: SimulationParams) -> dict:
     # Base real-world impact was 87.4%
     base_impact = 87.4
     
