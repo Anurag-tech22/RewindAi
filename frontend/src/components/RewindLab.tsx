@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 export function RewindLab({ baseState }: { baseState: any }) {
   const [drainage, setDrainage] = useState(50);
@@ -8,11 +9,39 @@ export function RewindLab({ baseState }: { baseState: any }) {
   
   const [simulating, setSimulating] = useState(false);
   const [results, setResults] = useState<{physical_impact: number, human_exposure: number, exposure_reduction: number} | null>(null);
+  
+  // Generate mock projection data based on results
+  const generateProjectionData = (impact: number, exposure: number) => {
+    const data = [];
+    for (let i = -12; i <= 24; i += 4) {
+      if (i <= 0) {
+        // Historical path
+        const base = baseState.impact * (Math.pow((i + 16) / 16, 2));
+        data.push({ time: i === 0 ? 'T-0' : `T${i}h`, actual: Math.min(100, Math.max(0, base)), projected: null });
+      } else {
+        // Projected path
+        const attenuation = Math.exp(-i / 12);
+        data.push({ 
+          time: `T+${i}h`, 
+          actual: null, 
+          projected: Math.min(100, Math.max(0, impact * attenuation)),
+          exposure: Math.min(100, Math.max(0, exposure * attenuation))
+        });
+      }
+    }
+    // Bridge the gap at T=0
+    const t0 = data.find(d => d.time === 'T-0');
+    if (t0) {
+        t0.projected = t0.actual;
+        t0.exposure = t0.actual;
+    }
+    return data;
+  };
 
   const handleSimulate = async () => {
     setSimulating(true);
     try {
-      const res = await fetch('http://localhost:8000/api/simulate', {
+      const res = await fetch('/api/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ drainage_capacity: drainage, vegetation: vegetation, warning_time: warningTime })
@@ -127,6 +156,37 @@ export function RewindLab({ baseState }: { baseState: any }) {
                   <div className="text-sm font-bold text-emerald-500 mt-3 bg-emerald-50 inline-block px-3 py-1 rounded-lg">
                     ↓ Risk reduced by {results.exposure_reduction.toFixed(0)} pts
                   </div>
+                </div>
+              </div>
+
+              {/* Advanced Forecasting Visualization */}
+              <div className="mt-8 pt-8 border-t border-border/60">
+                <div className="text-xs font-bold uppercase tracking-widest text-secondary mb-6 flex justify-between">
+                  <span>Impact Trajectory Projection</span>
+                  <span className="text-blue-500">24-Hour Forecast</span>
+                </div>
+                <div className="h-[200px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={generateProjectionData(results.physical_impact, results.human_exposure)} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorProjected" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="colorExposure" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                      <XAxis dataKey="time" tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+                      <YAxis tick={{fontSize: 10, fill: '#64748b'}} axisLine={false} tickLine={false} />
+                      <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                      <Area type="monotone" dataKey="actual" stroke="#94a3b8" strokeDasharray="5 5" fill="none" strokeWidth={2} name="Historical" />
+                      <Area type="monotone" dataKey="projected" stroke="#3b82f6" fillOpacity={1} fill="url(#colorProjected)" strokeWidth={3} name="Physical Impact" />
+                      <Area type="monotone" dataKey="exposure" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorExposure)" strokeWidth={3} name="Human Exposure" />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
               </div>
             </motion.div>

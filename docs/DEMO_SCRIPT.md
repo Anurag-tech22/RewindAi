@@ -38,7 +38,7 @@
 
 **[2:40]**
 *Show architecture.*
-"Our architecture supports TabPFN for tabular forecasting and Gemma for structured explanation; the hackathon demo uses a transparent local baseline so it remains reproducible."
+"Our architecture supports TabPFN for tabular forecasting and Gemma for structured explanation; the current demo uses a transparent local baseline so it remains reproducible."
 
 **[2:50]**
 *Final statement.*

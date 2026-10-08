@@ -15,7 +15,7 @@ export default function App() {
   const tabs = ['Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/event/timeline')
+    fetch('/api/event/timeline')
       .then(res => res.json())
       .then(data => {
         setTimelineData(data);
@@ -94,7 +94,9 @@ export default function App() {
                   <span>Search...</span>
                   <span className="opacity-50 font-mono">⌘K</span>
                 </div>
-                <div className="w-9 h-9 rounded-full border border-border/80 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-xs text-blue-600 font-bold shadow-sm cursor-pointer hover:shadow transition-shadow">JD</div>
+                <div className="w-9 h-9 rounded-full border border-border/80 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-xs text-blue-600 font-bold shadow-sm cursor-pointer hover:shadow transition-shadow">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
               </div>
             </header>
 
