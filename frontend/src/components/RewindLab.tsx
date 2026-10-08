@@ -20,7 +20,7 @@ export function RewindLab({ baseState }: { baseState: any }) {
         data.push({ time: i === 0 ? 'T-0' : `T${i}h`, actual: Math.min(100, Math.max(0, base)), projected: null });
       } else {
         // Projected path
-        const attenuation = Math.exp(-i / 12);
+        const attenuation = Math.exp(-i / 12.0);
         data.push({ 
           time: `T+${i}h`, 
           actual: null, 
