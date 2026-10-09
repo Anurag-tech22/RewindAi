@@ -5,14 +5,16 @@ import { AIExplanation } from './components/AIExplanation';
 import { RewindLab } from './components/RewindLab';
 import { EnvironmentalMetrics } from './components/EnvironmentalMetrics';
 import { InterventionRanking } from './components/InterventionRanking';
+import { ClimateMemory } from './components/ClimateMemory';
+import { GlobalMonitor } from './components/GlobalMonitor';
 
 export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [timelineData, setTimelineData] = useState<any[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState('Overview');
+  const [activeTab, setActiveTab] = useState('Global Map');
   
-  const tabs = [ 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
+  const tabs = [ 'Global Map', 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
   useEffect(() => {
     fetch('/api/event/timeline')
@@ -140,6 +142,12 @@ export default function App() {
                 className="flex-1 overflow-y-auto scroll-smooth p-8"
               >
                 <div className="max-w-[1200px] mx-auto space-y-8 pb-24">
+                  {activeTab === 'Global Map' && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-[calc(100vh-140px)]">
+                      <GlobalMonitor />
+                    </motion.div>
+                  )}
+
                   {activeTab === 'Overview' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
                       <div className="bg-white/80 backdrop-blur-lg rounded-2xl border border-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
@@ -185,7 +193,13 @@ export default function App() {
                     </motion.div>
                   )}
 
-                  {(activeTab === 'Events' || activeTab === 'Climate Memory') && (
+                  {activeTab === 'Climate Memory' && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-[calc(100vh-140px)]">
+                      <ClimateMemory />
+                    </motion.div>
+                  )}
+
+                  {activeTab === 'Events' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-background rounded-xl border border-border p-16 shadow-sm flex flex-col items-center justify-center text-center">
                       <div className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center mb-6">
                         <span className="text-secondary">◷</span>
