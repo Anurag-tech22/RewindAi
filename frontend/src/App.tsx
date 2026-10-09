@@ -13,8 +13,23 @@ export default function App() {
   const [timelineData, setTimelineData] = useState<any[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('Global Map');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const tabs = [ 'Global Map', 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+      if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     fetch('/api/event/timeline')
@@ -86,13 +101,16 @@ export default function App() {
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">REWIND</span>
                 </div>
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-secondary">
-                  <a href="#" className="text-primary">Events</a>
-                  <a href="#" className="hover:text-primary transition-colors">Explore</a>
-                  <a href="#" className="hover:text-primary transition-colors">Memory</a>
+                  <button onClick={() => setActiveTab('Events')} className={`transition-colors ${activeTab === 'Events' ? 'text-primary' : 'hover:text-primary'}`}>Events</button>
+                  <button onClick={() => setActiveTab('Global Map')} className={`transition-colors ${activeTab === 'Global Map' ? 'text-primary' : 'hover:text-primary'}`}>Explore</button>
+                  <button onClick={() => setActiveTab('Climate Memory')} className={`transition-colors ${activeTab === 'Climate Memory' ? 'text-primary' : 'hover:text-primary'}`}>Memory</button>
                 </nav>
               </div>
               <div className="flex items-center gap-4">
-                <div className="hidden md:flex items-center gap-2 text-xs font-medium text-secondary bg-slate-50 border border-border/80 px-4 py-2 rounded-lg cursor-pointer hover:border-blue-400 transition-colors shadow-inner">
+                <div 
+                  onClick={() => setIsSearchOpen(true)}
+                  className="hidden md:flex items-center gap-2 text-xs font-medium text-secondary bg-slate-50 border border-border/80 px-4 py-2 rounded-lg cursor-pointer hover:border-blue-400 transition-colors shadow-inner"
+                >
                   <span>Search...</span>
                   <span className="opacity-50 font-mono">⌘K</span>
                 </div>
@@ -212,6 +230,43 @@ export default function App() {
               </motion.main>
             </div>
           </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => setIsSearchOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200"
+            >
+              <div className="flex items-center px-4 py-4 border-b border-slate-100">
+                <svg className="text-slate-400 mr-3" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input 
+                  autoFocus
+                  type="text" 
+                  placeholder="Search modules, events, and metrics..." 
+                  className="flex-1 outline-none text-slate-700 bg-transparent"
+                />
+                <button onClick={() => setIsSearchOpen(false)} className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded hover:bg-slate-200">ESC</button>
+              </div>
+              <div className="p-4 space-y-2 max-h-64 overflow-y-auto">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-2">Quick Links</div>
+                <div onClick={() => { setActiveTab('Global Map'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-blue-500">🌍</span> Global Map Monitor</div>
+                <div onClick={() => { setActiveTab('Rewind Lab'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-indigo-500">🔬</span> Rewind Lab Simulator</div>
+                <div onClick={() => { setActiveTab('Climate Memory'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-emerald-500">📚</span> Historical Climate Memory</div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
