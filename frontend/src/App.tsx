@@ -122,18 +122,32 @@ export default function App() {
 
             <div className="flex flex-1 overflow-hidden relative">
               <aside className="w-[240px] border-r border-border/50 bg-white/50 backdrop-blur-sm hidden lg:flex flex-col py-6 shrink-0 z-10">
-                <div className="px-5 mb-8">
+                <div className="px-5 mb-8 relative">
                   <div className="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Active Event</div>
                   <div 
-                    onClick={() => setActiveTab('Overview')}
+                    onClick={(e) => {
+                      e.currentTarget.nextElementSibling?.classList.toggle('hidden');
+                    }}
                     className="text-sm font-bold bg-white border border-border/80 rounded-xl px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors"
                   >
                     <span className="text-primary">Pune · 2026</span>
                     <span className="text-blue-500 text-xs">▼</span>
                   </div>
+                  {/* Dropdown Menu */}
+                  <div className="hidden absolute left-5 right-5 top-[65px] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50">
+                    <div onClick={() => setActiveTab('Overview')} className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-pointer text-slate-800">
+                      Pune · Flood <span className="text-xs text-blue-500 ml-2">Active</span>
+                    </div>
+                    <div className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
+                      Delhi · Heatwave <span className="text-xs text-slate-400 ml-2">Locked</span>
+                    </div>
+                    <div className="px-4 py-3 text-sm font-bold hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
+                      California · Fire <span className="text-xs text-slate-400 ml-2">Locked</span>
+                    </div>
+                  </div>
                   <div 
                     onClick={() => setHasStarted(false)}
-                    className="text-xs font-semibold text-blue-600 mt-3 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1"
+                    className="text-xs font-semibold text-blue-600 mt-4 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1"
                   >
                     <span>+</span> New Investigation
                   </div>
