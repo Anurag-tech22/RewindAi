@@ -16,6 +16,7 @@ export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isEventDropdownOpen, setIsEventDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const tabs = [ 'Global Map', 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
@@ -223,7 +224,12 @@ export default function App() {
                 </div>
                 
                 <div className="mt-auto px-3">
-                  <div className="px-3 py-2 text-sm text-secondary hover:text-primary hover:bg-surface rounded-md cursor-pointer transition-colors">Settings</div>
+                  <div 
+                    onClick={() => setIsSettingsOpen(true)}
+                    className="px-3 py-2 text-sm text-secondary hover:text-primary hover:bg-surface rounded-md cursor-pointer transition-colors"
+                  >
+                    Settings
+                  </div>
                 </div>
               </aside>
 
@@ -338,6 +344,63 @@ export default function App() {
                 <div onClick={() => { setActiveTab('Global Map'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-blue-500">🌍</span> Global Map Monitor</div>
                 <div onClick={() => { setActiveTab('Rewind Lab'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-indigo-500">🔬</span> Rewind Lab Simulator</div>
                 <div onClick={() => { setActiveTab('Climate Memory'); setIsSearchOpen(false); }} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-3"><span className="text-emerald-500">📚</span> Historical Climate Memory</div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isSettingsOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => setIsSettingsOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200 flex flex-col"
+            >
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
+                <h3 className="font-bold text-slate-800">Application Settings</h3>
+                <button onClick={() => setIsSettingsOpen(false)} className="text-slate-400 hover:text-slate-600">
+                  ✕
+                </button>
+              </div>
+              <div className="p-6 space-y-6">
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Appearance</div>
+                  <div className="flex items-center justify-between bg-slate-50 px-4 py-3 rounded-xl border border-slate-100">
+                    <span className="text-sm font-medium text-slate-700">Dark Mode</span>
+                    <div className="w-10 h-6 bg-slate-200 rounded-full relative cursor-not-allowed opacity-60">
+                      <div className="w-4 h-4 bg-white rounded-full absolute left-1 top-1 shadow-sm"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Data Sources</div>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-blue-100 bg-blue-50/50">
+                      <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                      <span className="text-sm font-medium text-slate-700">NOAA Weather API (Connected)</span>
+                    </div>
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-100 bg-slate-50">
+                      <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                      <span className="text-sm font-medium text-slate-700">Copernicus Climate Data (Local)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button onClick={() => setIsSettingsOpen(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors">
+                  Save Changes
+                </button>
               </div>
             </motion.div>
           </motion.div>
