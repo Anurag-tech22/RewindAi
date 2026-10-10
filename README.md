@@ -5,6 +5,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-🚀-success?style=flat)](https://rewind-app.onrender.com)
+
+*(Note: Replace `https://rewind-app.onrender.com` above with the exact Render URL from your dashboard!)*
 
 RewindAI is a world-class environmental event time machine. Instead of only predicting environmental risk, the system reconstructs how an environmental event developed over time, identifies model contribution signals, and allows the user to **rewind the event and simulate interventions**.
 
