@@ -124,11 +124,17 @@ export default function App() {
               <aside className="w-[240px] border-r border-border/50 bg-white/50 backdrop-blur-sm hidden lg:flex flex-col py-6 shrink-0 z-10">
                 <div className="px-5 mb-8">
                   <div className="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Active Event</div>
-                  <div className="text-sm font-bold bg-white border border-border/80 rounded-xl px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors">
+                  <div 
+                    onClick={() => setActiveTab('Overview')}
+                    className="text-sm font-bold bg-white border border-border/80 rounded-xl px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors"
+                  >
                     <span className="text-primary">Pune · 2026</span>
                     <span className="text-blue-500 text-xs">▼</span>
                   </div>
-                  <div className="text-xs font-semibold text-blue-600 mt-3 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1">
+                  <div 
+                    onClick={() => setHasStarted(false)}
+                    className="text-xs font-semibold text-blue-600 mt-3 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1"
+                  >
                     <span>+</span> New Investigation
                   </div>
                 </div>
