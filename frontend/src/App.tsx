@@ -14,6 +14,7 @@ export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('Global Map');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isEventDropdownOpen, setIsEventDropdownOpen] = useState(false);
   
   const tabs = [ 'Global Map', 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
@@ -125,26 +126,43 @@ export default function App() {
                 <div className="px-5 mb-8 relative">
                   <div className="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Active Event</div>
                   <div 
-                    onClick={(e) => {
-                      e.currentTarget.nextElementSibling?.classList.toggle('hidden');
-                    }}
+                    onClick={() => setIsEventDropdownOpen(!isEventDropdownOpen)}
                     className="text-sm font-bold bg-white border border-border/80 rounded-xl px-4 py-3 shadow-sm flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors"
                   >
                     <span className="text-primary">Pune · 2026</span>
-                    <span className="text-blue-500 text-xs">▼</span>
+                    <motion.span 
+                      animate={{ rotate: isEventDropdownOpen ? 180 : 0 }}
+                      className="text-blue-500 text-[10px]"
+                    >
+                      ▼
+                    </motion.span>
                   </div>
+                  
                   {/* Dropdown Menu */}
-                  <div className="hidden absolute left-5 right-5 top-[65px] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50">
-                    <div onClick={() => setActiveTab('Overview')} className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-pointer text-slate-800">
-                      Pune · Flood <span className="text-xs text-blue-500 ml-2">Active</span>
-                    </div>
-                    <div className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
-                      Delhi · Heatwave <span className="text-xs text-slate-400 ml-2">Locked</span>
-                    </div>
-                    <div className="px-4 py-3 text-sm font-bold hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
-                      California · Fire <span className="text-xs text-slate-400 ml-2">Locked</span>
-                    </div>
-                  </div>
+                  <AnimatePresence>
+                    {isEventDropdownOpen && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute left-5 right-5 top-[70px] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50"
+                      >
+                        <div 
+                          onClick={() => { setActiveTab('Overview'); setIsEventDropdownOpen(false); }} 
+                          className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-pointer text-slate-800"
+                        >
+                          Pune · Flood <span className="text-xs text-blue-500 ml-2">Active</span>
+                        </div>
+                        <div className="px-4 py-3 text-sm font-bold border-b border-slate-100 hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
+                          Delhi · Heatwave <span className="text-xs text-slate-400 ml-2">Locked</span>
+                        </div>
+                        <div className="px-4 py-3 text-sm font-bold hover:bg-slate-50 cursor-not-allowed opacity-50 text-slate-800">
+                          California · Fire <span className="text-xs text-slate-400 ml-2">Locked</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  
                   <div 
                     onClick={() => setHasStarted(false)}
                     className="text-xs font-semibold text-blue-600 mt-4 hover:text-blue-700 cursor-pointer px-1 flex items-center gap-1"
