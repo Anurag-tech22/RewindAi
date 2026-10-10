@@ -1,0 +1,26 @@
+services:
+  # 1. FastAPI Backend (Web Service)
+  - type: web
+    name: rewind-api
+    env: python
+    region: ohio
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+  # 2. React/Vite Frontend (Static Site)
+  - type: web
+    name: rewind-frontend
+    env: static
+    region: ohio
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.0.0
+      # IMPORTANT: When the backend gets deployed, it will get a Render URL.
+      # You'll need to add that URL here so the frontend knows where the API is.
+      - key: VITE_API_URL
+        value: https://rewind-api.onrender.com

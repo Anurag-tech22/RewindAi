@@ -34,7 +34,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetch('/api/event/timeline')
+    const API_BASE = import.meta.env.VITE_API_URL || '';
+    fetch(`${API_BASE}/api/event/timeline`)
       .then(res => res.json())
       .then(data => {
         setTimelineData(data);

@@ -41,7 +41,8 @@ export function RewindLab({ baseState }: { baseState: any }) {
   const handleSimulate = async () => {
     setSimulating(true);
     try {
-      const res = await fetch('/api/simulate', {
+      const API_BASE = import.meta.env.VITE_API_URL || '';
+      const res = await fetch(`${API_BASE}/api/simulate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ drainage_capacity: drainage, vegetation: vegetation, warning_time: warningTime })
