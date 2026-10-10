@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 export function RewindLab({ baseState }: { baseState: any }) {
   const [drainage, setDrainage] = useState(50);
@@ -12,18 +12,18 @@ export function RewindLab({ baseState }: { baseState: any }) {
   
   // Generate mock projection data based on results
   const generateProjectionData = (impact: number, exposure: number) => {
-    const data = [];
+    const data: { time: string, actual?: number, projected?: number, exposure?: number }[] = [];
     for (let i = -12; i <= 24; i += 4) {
       if (i <= 0) {
         // Historical path
         const base = baseState.impact * (Math.pow((i + 16) / 16, 2));
-        data.push({ time: i === 0 ? 'T-0' : `T${i}h`, actual: Math.min(100, Math.max(0, base)), projected: null });
+        data.push({ time: i === 0 ? 'T-0' : `T${i}h`, actual: Math.min(100, Math.max(0, base)), projected: undefined, exposure: undefined });
       } else {
         // Projected path
         const attenuation = Math.exp(-i / 12.0);
         data.push({ 
           time: `T+${i}h`, 
-          actual: null, 
+          actual: undefined, 
           projected: Math.min(100, Math.max(0, impact * attenuation)),
           exposure: Math.min(100, Math.max(0, exposure * attenuation))
         });
