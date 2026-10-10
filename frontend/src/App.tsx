@@ -15,6 +15,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('Global Map');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isEventDropdownOpen, setIsEventDropdownOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   
   const tabs = [ 'Global Map', 'Overview', 'Events', 'Rewind Lab', 'Climate Memory', 'Interventions'];
 
@@ -107,7 +108,7 @@ export default function App() {
                   <button onClick={() => setActiveTab('Climate Memory')} className={`transition-colors ${activeTab === 'Climate Memory' ? 'text-primary' : 'hover:text-primary'}`}>Memory</button>
                 </nav>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 relative">
                 <div 
                   onClick={() => setIsSearchOpen(true)}
                   className="hidden md:flex items-center gap-2 text-xs font-medium text-secondary bg-slate-50 border border-border/80 px-4 py-2 rounded-lg cursor-pointer hover:border-blue-400 transition-colors shadow-inner"
@@ -115,9 +116,43 @@ export default function App() {
                   <span>Search...</span>
                   <span className="opacity-50 font-mono">⌘K</span>
                 </div>
-                <div className="w-9 h-9 rounded-full border border-border/80 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-xs text-blue-600 font-bold shadow-sm cursor-pointer hover:shadow transition-shadow">
+                
+                <div 
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  className="w-9 h-9 rounded-full border border-border/80 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center text-xs text-blue-600 font-bold shadow-sm cursor-pointer hover:shadow hover:scale-105 transition-all"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
+
+                <AnimatePresence>
+                  {isProfileDropdownOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden z-50 flex flex-col"
+                    >
+                      <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                        <div className="text-sm font-bold text-slate-800">Jane Researcher</div>
+                        <div className="text-xs text-slate-500 font-mono mt-0.5">Global Crisis Unit</div>
+                      </div>
+                      <div className="p-2">
+                        <div onClick={() => setIsProfileDropdownOpen(false)} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-2">
+                          <span className="text-slate-400">⚙️</span> Preferences
+                        </div>
+                        <div onClick={() => setIsProfileDropdownOpen(false)} className="px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg cursor-pointer flex items-center gap-2">
+                          <span className="text-slate-400">📊</span> My API Limits
+                        </div>
+                      </div>
+                      <div className="p-2 border-t border-slate-100">
+                        <div onClick={() => setIsProfileDropdownOpen(false)} className="px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg cursor-pointer flex items-center gap-2 font-medium">
+                          Sign Out
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </header>
 
